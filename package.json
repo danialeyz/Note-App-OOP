@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
+    "build": "postcss ./src/css/tailwind.css -o ./public/build/tailwind.css",
     "dev": "postcss ./src/css/tailwind.css -o ./public/build/tailwind.css --watch"
   },
   "keywords": [],
