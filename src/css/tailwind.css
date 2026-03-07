@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * {
+    @apply transition-colors duration-150;
+  }
+}
+
+@layer components {
+  .note-item {
+    @apply transition-all duration-200;
+  }
+
+  .note-item:hover .note-delete {
+    opacity: 1;
+  }
+
+  .notes-body,
+  .notes-body-mobile {
+    line-height: 1.8;
+  }
+
+  .notes-search:focus,
+  .notes-search-mobile:focus {
+    @apply shadow-sm;
+  }
+
+  .notes-sidebar {
+    @apply border-r border-base-300/50;
+  }
+}
+
+@layer utilities {
+  /* Dynamic Island / notch safe area - top padding */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* Home indicator safe area - bottom padding */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

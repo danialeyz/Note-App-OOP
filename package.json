@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "postcss ./src/css/tailwind.css -o  ./public/build/tailwind.css --watch"
+    "start": "node server.js",
+    "dev": "postcss ./src/css/tailwind.css -o ./public/build/tailwind.css --watch"
   },
   "keywords": [],
   "author": "",
