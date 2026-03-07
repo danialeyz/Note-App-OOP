@@ -9,7 +9,7 @@ module.exports = {
       "business", "acid", "lemonade", "night", "coffee", "winter",
     ],
   },
-  content: ["./public/build/**/*.{html,js}", "./src/js/**/*.js"],
+  content: ["./index.html", "./public/build/**/*.{html,js}", "./src/js/**/*.js"],
   theme: {
     extend: {
       fontFamily: {
