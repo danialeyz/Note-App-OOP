@@ -14,45 +14,64 @@ export default class NotesView {
 
       <!-- Mobile: Notes List View -->
       <div class="mobile-list-view flex flex-col h-full w-full md:hidden pt-safe">
-        <div class="px-4 pt-4 pb-3">
-          <div class="flex items-center justify-between mb-3">
+
+        <!-- Mobile Header -->
+        <div class="px-4 pt-3 pb-2 bg-base-200/60 backdrop-blur-sm">
+          <div class="flex items-center justify-between mb-2">
             <div>
-              <h1 class="text-xl font-bold tracking-tight">
+              <h1 class="text-2xl font-black tracking-tight leading-none">
                 <span class="text-primary">Note</span><span class="text-base-content">Pad</span>
               </h1>
-              <p class="notes-stats-mobile text-[10px] text-base-content/50 mt-0.5">0 notes</p>
+              <p class="notes-stats-mobile text-[10px] text-base-content/40 mt-0.5 font-medium">0 notes</p>
             </div>
-            <div class="flex gap-1">
-              <button class="notes-export-mobile btn btn-ghost btn-xs btn-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-              </button>
+            <div class="flex items-center gap-1">
+              <!-- Sort dropdown -->
               <div class="dropdown dropdown-end">
-                <label tabindex="0" class="btn btn-ghost btn-xs btn-circle">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle inline-flex items-center justify-center" title="Sort">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg>
                 </label>
-                <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-48 max-h-64 overflow-y-auto border border-base-300">
+                <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-44 border border-base-300 gap-1">
+                  ${this._getSortOptions()}
+                </ul>
+              </div>
+              <!-- Export -->
+              <button class="notes-export-mobile btn btn-ghost btn-sm btn-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              </button>
+              <!-- Theme -->
+              <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle inline-flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                </label>
+                <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-52 max-h-72 overflow-y-auto border border-base-300 gap-1">
                   ${this._getThemeOptions()}
                 </ul>
               </div>
             </div>
           </div>
+          <!-- Search -->
           <div class="relative">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            <input type="text" placeholder="Search notes..." class="notes-search-mobile input input-sm input-bordered w-full pl-9 bg-base-100/50 focus:bg-base-100" />
+            <input type="text" placeholder="Search notes..." class="notes-search-mobile input input-sm input-bordered w-full pl-9 bg-base-100/70 focus:bg-base-100 rounded-xl" />
           </div>
         </div>
+
         <!-- Mobile Category Chips -->
-        <div class="category-chips-mobile flex gap-2 px-4 py-2 overflow-x-auto scrollbar-none shrink-0"></div>
+        <div class="category-chips-mobile flex gap-2 px-4 py-2.5 overflow-x-auto scrollbar-none shrink-0 bg-base-200/30"></div>
+
         <!-- Mobile Notes List -->
-        <div class="notes-list-mobile flex-1 overflow-y-auto px-3 py-2 flex flex-col gap-2 pb-24"></div>
-        <!-- Mobile Empty -->
-        <div class="notes-empty-mobile flex-1 flex-col items-center justify-center gap-6 hidden pb-24">
-          <div class="flex flex-col items-center justify-center h-full gap-4">
-            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+        <div class="notes-list-mobile flex-1 overflow-y-auto px-3 pt-2 pb-28 flex flex-col gap-2.5"></div>
+
+        <!-- Mobile Empty State -->
+        <div class="notes-empty-mobile flex-1 flex-col items-center justify-center gap-3 hidden pb-24">
+          <div class="flex flex-col items-center justify-center h-full gap-4 px-8 text-center">
+            <div class="w-24 h-24 rounded-3xl bg-primary/10 flex items-center justify-center rotate-6 shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
             </div>
-            <p class="text-lg font-semibold text-base-content/70">No notes yet</p>
-            <p class="text-sm text-base-content/40">Tap + to create your first note</p>
+            <div>
+              <p class="text-lg font-bold text-base-content/70">Nothing here yet</p>
+              <p class="text-sm text-base-content/40 mt-1">Tap <span class="text-primary font-semibold">+</span> to write your first note</p>
+            </div>
           </div>
         </div>
       </div>
@@ -61,17 +80,20 @@ export default class NotesView {
       <div class="mobile-editor-view flex flex-col h-full w-full md:hidden hidden pt-safe">
         <div class="flex items-center gap-2 px-3 pt-3 pb-2">
           <button class="mobile-back btn btn-ghost btn-sm btn-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
           </button>
           <div class="notes-color-picker-mobile flex gap-1.5 flex-1 justify-center">
             ${this._getColorDots("mobile")}
           </div>
           <div class="flex items-center gap-1">
-            <button class="notes-pin-mobile btn btn-ghost btn-xs btn-circle">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+            <button class="notes-favorite-mobile btn btn-ghost btn-sm btn-circle" title="Favorite">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
             </button>
-            <button class="notes-duplicate-mobile btn btn-ghost btn-xs btn-circle">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            <button class="notes-pin-mobile btn btn-ghost btn-sm btn-circle" title="Pin">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+            </button>
+            <button class="notes-duplicate-mobile btn btn-ghost btn-sm btn-circle" title="Duplicate">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
             </button>
           </div>
         </div>
@@ -124,15 +146,24 @@ export default class NotesView {
               </h1>
               <p class="notes-stats text-xs text-base-content/50 mt-0.5">0 notes</p>
             </div>
-            <div class="flex gap-1">
+            <div class="flex gap-1 items-center">
+              <!-- Sort -->
+              <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle inline-flex items-center justify-center tooltip tooltip-bottom" data-tip="Sort">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg>
+                </label>
+                <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-44 border border-base-300 gap-1">
+                  ${this._getSortOptions()}
+                </ul>
+              </div>
               <button class="notes-export btn btn-ghost btn-sm btn-circle tooltip tooltip-bottom" data-tip="Export all">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
               </button>
               <div class="dropdown dropdown-end">
-                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle tooltip tooltip-bottom" data-tip="Theme">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle inline-flex items-center justify-center tooltip tooltip-bottom" data-tip="Theme">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
                 </label>
-                <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-48 max-h-64 overflow-y-auto border border-base-300">
+                <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-52 max-h-72 overflow-y-auto border border-base-300 gap-1">
                   ${this._getThemeOptions()}
                 </ul>
               </div>
@@ -163,6 +194,10 @@ export default class NotesView {
           <div class="ml-auto flex items-center gap-3">
             <!-- Desktop Category Selector -->
             <select class="note-category select select-xs select-bordered max-w-[10rem]"></select>
+            <button class="notes-favorite btn btn-ghost btn-xs gap-1 tooltip tooltip-bottom" data-tip="Favorite">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+              <span class="notes-favorite-label text-xs">Star</span>
+            </button>
             <button class="notes-pin btn btn-ghost btn-xs gap-1 tooltip tooltip-bottom" data-tip="Pin note">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
               <span class="notes-pin-label text-xs">Pin</span>
@@ -272,6 +307,19 @@ export default class NotesView {
       .join("");
   }
 
+  _getSortOptions() {
+    const sorts = [
+      { key: "modified", label: "Last Modified", icon: "🕐" },
+      { key: "created",  label: "Date Created",  icon: "📅" },
+      { key: "title",    label: "Title A–Z",     icon: "🔤" },
+      { key: "color",    label: "By Color",      icon: "🎨" },
+      { key: "favorite", label: "Favorites First",icon: "⭐" },
+    ];
+    return sorts
+      .map((s) => `<li><a class="notes-sort-btn text-sm py-2 px-3 rounded-lg" data-sort="${s.key}"><span class="text-base">${s.icon}</span> ${s.label}</a></li>`)
+      .join("");
+  }
+
   _getThemeOptions() {
     const themes = [
       { name: "dracula", icon: "🧛" }, { name: "dark", icon: "🌙" },
@@ -286,7 +334,7 @@ export default class NotesView {
       { name: "fantasy", icon: "🔮" }, { name: "business", icon: "💼" },
     ];
     return themes
-      .map((t) => `<li><a class="notes-theme-btn capitalize text-sm" data-theme="${t.name}">${t.icon} ${t.name}</a></li>`)
+      .map((t) => `<li><a class="notes-theme-btn capitalize text-sm py-2 px-3 rounded-lg" data-theme="${t.name}"><span class="text-lg">${t.icon}</span> ${t.name}</a></li>`)
       .join("");
   }
 
@@ -362,24 +410,26 @@ export default class NotesView {
     const $$ = (sel) => this.root.querySelectorAll(sel);
 
     // Desktop elements
-    const addBtn = $(".notes-add");
-    const titleInput = $(".notes-title");
-    const bodyInput = $(".notes-body");
-    const searchInput = $(".notes-search");
-    const pinBtn = $(".notes-pin");
+    const addBtn       = $(".notes-add");
+    const titleInput   = $(".notes-title");
+    const bodyInput    = $(".notes-body");
+    const searchInput  = $(".notes-search");
+    const pinBtn       = $(".notes-pin");
+    const favoriteBtn  = $(".notes-favorite");
     const duplicateBtn = $(".notes-duplicate");
-    const exportBtn = $(".notes-export");
-    const catSelect = $(".note-category");
+    const exportBtn    = $(".notes-export");
+    const catSelect    = $(".note-category");
 
     // Mobile elements
-    const titleInputM = $(".notes-title-mobile");
-    const bodyInputM = $(".notes-body-mobile");
-    const searchInputM = $(".notes-search-mobile");
-    const pinBtnM = $(".notes-pin-mobile");
+    const titleInputM   = $(".notes-title-mobile");
+    const bodyInputM    = $(".notes-body-mobile");
+    const searchInputM  = $(".notes-search-mobile");
+    const pinBtnM       = $(".notes-pin-mobile");
+    const favoriteBtnM  = $(".notes-favorite-mobile");
     const duplicateBtnM = $(".notes-duplicate-mobile");
-    const exportBtnM = $(".notes-export-mobile");
-    const catSelectM = $(".note-category-mobile");
-    const backBtn = $(".mobile-back");
+    const exportBtnM    = $(".notes-export-mobile");
+    const catSelectM    = $(".note-category-mobile");
+    const backBtn       = $(".mobile-back");
 
     // Mobile bottom nav
     $(".mobile-nav-list").addEventListener("click", () => this._showMobileView("list"));
@@ -433,7 +483,11 @@ export default class NotesView {
 
     // Themes
     $$(".notes-theme-btn").forEach((btn) => {
-      btn.addEventListener("click", () => this.handlers.onThemeChange(btn.dataset.theme));
+      btn.addEventListener("click", () => {
+        this.handlers.onThemeChange(btn.dataset.theme);
+        // Close the dropdown by removing focus
+        document.activeElement.blur();
+      });
     });
 
     // Color dots
@@ -452,13 +506,23 @@ export default class NotesView {
       });
     });
 
-    // Pin / Duplicate / Export
+    // Pin / Favorite / Duplicate / Export
     pinBtn.addEventListener("click", () => this.handlers.onNotePin());
+    favoriteBtn.addEventListener("click", () => this.handlers.onNoteFavorite());
     duplicateBtn.addEventListener("click", () => this.handlers.onNoteDuplicate());
     exportBtn.addEventListener("click", () => this.handlers.onExport());
     pinBtnM.addEventListener("click", () => this.handlers.onNotePin());
+    favoriteBtnM.addEventListener("click", () => this.handlers.onNoteFavorite());
     duplicateBtnM.addEventListener("click", () => this.handlers.onNoteDuplicate());
     exportBtnM.addEventListener("click", () => this.handlers.onExport());
+
+    // Sort
+    $$(".notes-sort-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        this.handlers.onSortChange(btn.dataset.sort);
+        document.activeElement.blur();
+      });
+    });
 
     // Category selector in editor
     catSelect.addEventListener("change", () => this.handlers.onNoteCategory(catSelect.value));
@@ -519,29 +583,30 @@ export default class NotesView {
   // ── Category rendering ───────────────────────────────
 
   _buildCategoryChips(categories, counts, activeCategory) {
-    let html = "";
-    // "All" chip
-    const allActive = activeCategory === "all";
-    html += `<button class="category-chip btn btn-xs ${allActive ? "btn-primary" : "btn-ghost"} whitespace-nowrap" data-cat-id="all">All <span class="ml-1 opacity-60">${counts.all || 0}</span></button>`;
+    const chip = (id, label, active, extra = "") =>
+      `<button class="category-chip btn btn-xs shrink-0 ${active ? "btn-primary shadow-sm" : "btn-ghost"} whitespace-nowrap gap-1" data-cat-id="${id}">${label}<span class="opacity-50 text-[10px] font-bold">${extra}</span></button>`;
 
-    // User categories
+    let html = "";
+    html += chip("all", "✦ All", activeCategory === "all", counts.all || 0);
+    if (counts.favorites > 0 || activeCategory === "favorites") {
+      html += chip("favorites", "⭐ Favorites", activeCategory === "favorites", counts.favorites || 0);
+    }
+
     for (const cat of categories) {
       const active = activeCategory === cat.id;
       const count = counts[cat.id] || 0;
-      html += `<button class="category-chip btn btn-xs ${active ? "btn-primary" : "btn-ghost"} whitespace-nowrap group" data-cat-id="${cat.id}">
-        ${this._escapeHTML(cat.name)} <span class="ml-1 opacity-60">${count}</span>
-        <span class="category-manage-btn opacity-0 group-hover:opacity-60 ml-0.5 text-[10px]" data-cat-id="${cat.id}">&#9881;</span>
+      const icon = cat.icon || "📁";
+      html += `<button class="category-chip btn btn-xs shrink-0 ${active ? "btn-primary shadow-sm" : "btn-ghost"} whitespace-nowrap gap-1 group" data-cat-id="${cat.id}">
+        ${icon} ${this._escapeHTML(cat.name)}<span class="opacity-50 text-[10px] font-bold">${count}</span>
+        <span class="category-manage-btn opacity-0 group-hover:opacity-70 text-[10px] -ml-0.5" data-cat-id="${cat.id}">⚙</span>
       </button>`;
     }
 
-    // Uncategorized chip
-    const uncatActive = activeCategory === "uncategorized";
-    if (counts.uncategorized > 0 || uncatActive) {
-      html += `<button class="category-chip btn btn-xs ${uncatActive ? "btn-primary" : "btn-ghost"} whitespace-nowrap" data-cat-id="uncategorized">Uncategorized <span class="ml-1 opacity-60">${counts.uncategorized || 0}</span></button>`;
+    if (counts.uncategorized > 0 || activeCategory === "uncategorized") {
+      html += chip("uncategorized", "📄 Other", activeCategory === "uncategorized", counts.uncategorized || 0);
     }
 
-    // Add category button
-    html += `<button class="category-add-btn btn btn-xs btn-ghost btn-circle whitespace-nowrap" title="Add category">
+    html += `<button class="category-add-btn btn btn-xs btn-ghost btn-circle shrink-0" title="New category">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
     </button>`;
 
@@ -607,29 +672,55 @@ export default class NotesView {
   // ── Note rendering ──────────────────────────────────
 
   _createNoteItemHTML(note) {
-    const { id, title, body, updated, pinned, color } = note;
-    const preview = body.length > 50 ? body.substring(0, 50) + "..." : body;
+    const { id, title, body, updated, pinned, favorite, color } = note;
+    const preview = body.length > 80 ? body.substring(0, 80) + "…" : body;
     const time = this._formatRelativeTime(updated);
     const colorClass = this._getNoteColorClass(color);
-    const borderLeft = colorClass ? "border-l-4 " + colorClass : "";
-    const pinIcon = pinned
-      ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-warning" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" /></svg>'
+    const accentBorder = colorClass ? "border-l-[3px] " + colorClass : "border-l-[3px] border-l-transparent";
+    const accentBg = this._getNoteColorBg(color);
+
+    const pinBadge = pinned
+      ? `<span class="inline-flex items-center gap-0.5 text-[9px] font-bold text-warning bg-warning/10 px-1.5 py-0.5 rounded-full">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>Pinned
+         </span>`
+      : "";
+    const favIcon = favorite
+      ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`
       : "";
 
     return `
-      <div class="note-item group rounded-xl bg-base-100 cursor-pointer hover:bg-base-300/50 transition-all ${borderLeft}" data-note-id="${id}">
-        <div class="p-3">
-          <div class="flex items-center gap-1.5 mb-1">
-            ${pinIcon}
-            <h3 class="font-semibold text-sm truncate flex-1">${this._escapeHTML(title)}</h3>
-            <button class="note-delete opacity-0 group-hover:opacity-100 btn btn-ghost btn-xs btn-circle hover:btn-error transition-opacity" data-note-id="${id}">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+      <div class="note-item group rounded-2xl ${accentBg} cursor-pointer hover:shadow-md transition-all duration-200 ${accentBorder} overflow-hidden" data-note-id="${id}">
+        <div class="p-3.5">
+          <div class="flex items-start gap-2 mb-1.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 mb-0.5">
+                ${pinBadge}
+              </div>
+              <h3 class="font-bold text-sm leading-snug truncate">${this._escapeHTML(title) || "Untitled"}</h3>
+            </div>
+            <div class="flex items-center gap-1 shrink-0 mt-0.5">
+              ${favIcon}
+              <button class="note-delete opacity-0 group-hover:opacity-100 btn btn-ghost btn-xs btn-circle hover:btn-error transition-all" data-note-id="${id}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
           </div>
-          <p class="text-xs text-base-content/50 truncate mb-1.5">${this._escapeHTML(preview) || "Empty note"}</p>
-          <p class="text-[10px] text-base-content/30">${time}</p>
+          <p class="text-xs text-base-content/50 line-clamp-2 leading-relaxed mb-2">${this._escapeHTML(preview) || "No content yet…"}</p>
+          <p class="text-[10px] text-base-content/30 font-medium">${time}</p>
         </div>
       </div>`;
+  }
+
+  _getNoteColorBg(color) {
+    const map = {
+      red:    "bg-red-500/5",
+      orange: "bg-orange-500/5",
+      yellow: "bg-yellow-500/5",
+      green:  "bg-green-500/5",
+      blue:   "bg-blue-500/5",
+      purple: "bg-purple-500/5",
+    };
+    return map[color] || "bg-base-100";
   }
 
   updateNoteList(notes) {
@@ -678,11 +769,19 @@ export default class NotesView {
 
     // Pin state
     const pinLabel = this.root.querySelector(".notes-pin-label");
-    const pinBtn = this.root.querySelector(".notes-pin");
-    const pinBtnM = this.root.querySelector(".notes-pin-mobile");
+    const pinBtn   = this.root.querySelector(".notes-pin");
+    const pinBtnM  = this.root.querySelector(".notes-pin-mobile");
     pinLabel.textContent = note.pinned ? "Unpin" : "Pin";
     pinBtn.classList.toggle("text-warning", !!note.pinned);
     pinBtnM.classList.toggle("text-warning", !!note.pinned);
+
+    // Favorite state
+    const favLabel = this.root.querySelector(".notes-favorite-label");
+    const favBtn   = this.root.querySelector(".notes-favorite");
+    const favBtnM  = this.root.querySelector(".notes-favorite-mobile");
+    if (favLabel) favLabel.textContent = note.favorite ? "Unstar" : "Star";
+    favBtn.classList.toggle("text-yellow-400", !!note.favorite);
+    favBtnM.classList.toggle("text-yellow-400", !!note.favorite);
 
     // Color dots
     this.root.querySelectorAll(".note-color-dot, .note-color-dot-m").forEach((dot) => {

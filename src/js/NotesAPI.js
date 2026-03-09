@@ -2,19 +2,29 @@ export default class NotesAPI {
   // ── Notes ──────────────────────────────────────────
 
   static getAllNotes() {
-    const notes = JSON.parse(localStorage.getItem("notes-app") || "[]");
-    return notes.sort((a, b) => {
-      if (a.pinned && !b.pinned) return -1;
-      if (!a.pinned && b.pinned) return 1;
-      return new Date(b.updated) - new Date(a.updated);
-    });
+    return JSON.parse(localStorage.getItem("notes-app") || "[]");
+  }
+
+  static getSortedNotes(notes, sortBy = "modified") {
+    const sorted = [...notes];
+    // Pinned always float to top
+    const pinned = sorted.filter((n) => n.pinned);
+    const rest = sorted.filter((n) => !n.pinned);
+    const sorter = {
+      modified: (a, b) => new Date(b.updated) - new Date(a.updated),
+      created:  (a, b) => new Date(b.created) - new Date(a.created),
+      title:    (a, b) => (a.title || "").localeCompare(b.title || ""),
+      color:    (a, b) => (a.color || "default").localeCompare(b.color || "default"),
+      favorite: (a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0),
+    }[sortBy] || sorter.modified;
+    return [...pinned.sort(sorter), ...rest.sort(sorter)];
   }
 
   static getNotesByCategory(categoryId) {
-    if (!categoryId || categoryId === "all") return NotesAPI.getAllNotes();
-    return NotesAPI.getAllNotes().filter(
-      (n) => n.category === categoryId
-    );
+    const all = NotesAPI.getAllNotes();
+    if (!categoryId || categoryId === "all") return all;
+    if (categoryId === "favorites") return all.filter((n) => n.favorite);
+    return all.filter((n) => n.category === categoryId);
   }
 
   static saveNote(noteToSave) {
@@ -34,6 +44,7 @@ export default class NotesAPI {
       noteToSave.created = new Date().toISOString();
       noteToSave.color = noteToSave.color || "default";
       noteToSave.pinned = noteToSave.pinned || false;
+      noteToSave.favorite = noteToSave.favorite || false;
       noteToSave.category = noteToSave.category || "uncategorized";
       notes.push(noteToSave);
     }
@@ -61,6 +72,15 @@ export default class NotesAPI {
     });
   }
 
+  static toggleFavorite(id) {
+    const notes = NotesAPI.getAllNotes();
+    const note = notes.find((n) => n.id === Number(id));
+    if (note) {
+      note.favorite = !note.favorite;
+      localStorage.setItem("notes-app", JSON.stringify(notes));
+    }
+  }
+
   static togglePin(id) {
     const notes = NotesAPI.getAllNotes();
     const note = notes.find((n) => n.id === Number(id));
@@ -73,9 +93,8 @@ export default class NotesAPI {
   static searchNotes(query, categoryId) {
     const q = query.toLowerCase();
     let notes = NotesAPI.getAllNotes();
-    if (categoryId && categoryId !== "all") {
-      notes = notes.filter((n) => n.category === categoryId);
-    }
+    if (categoryId === "favorites") notes = notes.filter((n) => n.favorite);
+    else if (categoryId && categoryId !== "all") notes = notes.filter((n) => n.category === categoryId);
     return notes.filter(
       (n) =>
         n.title.toLowerCase().includes(q) ||
@@ -141,10 +160,12 @@ export default class NotesAPI {
 
     if (existing) {
       existing.name = category.name;
-      existing.icon = category.icon ?? existing.icon;
+      existing.icon  = category.icon  ?? existing.icon;
+      existing.color = category.color ?? existing.color;
     } else {
-      category.id = "cat-" + Date.now();
-      category.icon = category.icon || "";
+      category.id    = "cat-" + Date.now();
+      category.icon  = category.icon  || "📁";
+      category.color = category.color || "";
       categories.push(category);
     }
 
@@ -169,7 +190,7 @@ export default class NotesAPI {
 
   static getCategoryNoteCounts() {
     const notes = NotesAPI.getAllNotes();
-    const counts = { all: notes.length, uncategorized: 0 };
+    const counts = { all: notes.length, uncategorized: 0, favorites: notes.filter(n => n.favorite).length };
     for (const note of notes) {
       const cat = note.category || "uncategorized";
       if (cat === "uncategorized") {

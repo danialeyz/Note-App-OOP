@@ -7,6 +7,7 @@ export default class App {
     this.activeNote = null;
     this.searchQuery = "";
     this.activeCategory = "all";
+    this.sortBy = "modified";
 
     this.view = new NotesView(root, this._handlers());
 
@@ -30,6 +31,7 @@ export default class App {
     } else {
       notes = NotesAPI.getNotesByCategory(this.activeCategory);
     }
+    notes = NotesAPI.getSortedNotes(notes, this.sortBy);
 
     this._setNotes(notes);
 
@@ -96,6 +98,18 @@ export default class App {
       onNotePin: () => {
         if (!this.activeNote) return;
         NotesAPI.togglePin(this.activeNote.id);
+        this._refreshNotes();
+      },
+
+      onNoteFavorite: () => {
+        if (!this.activeNote) return;
+        NotesAPI.toggleFavorite(this.activeNote.id);
+        this._refreshNotes();
+        this._refreshCategories();
+      },
+
+      onSortChange: (sortBy) => {
+        this.sortBy = sortBy;
         this._refreshNotes();
       },
 
